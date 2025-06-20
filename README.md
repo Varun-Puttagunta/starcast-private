@@ -110,6 +110,42 @@ NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
 
 ---
 
+### 🔑 API Keys & External Services Setup
+
+Your project uses several external APIs. You'll need to set up the following keys in your `.env` file:
+
+#### 1. **Google Gemini AI API**
+- **Purpose:** Used for generating AI-powered event descriptions.
+- **Env Variable:** `GOOGLE_AI_API_KEY`
+- **Where Used:** `/app/api/generate-description/route.ts`
+- **How to get:** [Google AI API documentation](https://ai.google.dev/)
+
+#### 2. **Google Auth (NextAuth)**
+- **Purpose:** Enables Google login for users.
+- **Env Variables:**  
+  - `GOOGLE_CLIENT_ID`  
+  - `GOOGLE_CLIENT_SECRET`
+- **Where Used:** `/lib/auth.ts`
+- **How to get:** [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+
+#### 3. **GeoDB Cities API**
+- **Purpose:** Location autocomplete and city data.
+- **Env Variable:** `NEXT_PUBLIC_GEODB_API_KEY`
+- **Where Used:** `/lib/api-config.ts`
+- **How to get:** [RapidAPI GeoDB Cities](https://rapidapi.com/wirefreethought/api/geodb-cities/)
+
+---
+
+### 🌐 Public APIs (No Key Required)
+
+These APIs are used but do **not** require a key:
+- **NASA EONET API**: For natural event data (`https://eonet.gsfc.nasa.gov/api/v3/events`)
+- **Open Notify ISS API**: For ISS position and crew (`http://api.open-notify.org/iss-now.json`, `http://api.open-notify.org/astros.json`)
+- **Open-Meteo Weather API**: For weather data (`https://api.open-meteo.com/v1`)
+- **Spaceflight News API**: For space news (`https://api.spaceflightnewsapi.net/v4/articles/`)
+
+---
+
 ### 7. Set Up the Database
 
 Run the following commands to generate the Prisma client and apply migrations:
