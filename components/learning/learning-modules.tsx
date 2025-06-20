@@ -1,11 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Sun, Star, Telescope, Rocket, Globe2, ChevronRight, ArrowRight, Play } from "lucide-react"
-import { useSession } from "next-auth/react"
-import { Progress } from "@/components/ui/progress"
 
 interface Module {
   id: number
@@ -22,14 +20,6 @@ interface Lesson {
   question: string
   answers: string[]
   correctAnswer: string
-}
-
-interface UserProgress {
-  completedLessons: string[]
-  completedModules: number[]
-  lastModule: number
-  lastLesson: string
-  totalProgress: number
 }
 
 const modules: Module[] = [
@@ -401,52 +391,10 @@ const modules: Module[] = [
 ]
 
 export function LearningModules() {
-  const { data: session } = useSession()
   const [selectedModule, setSelectedModule] = useState<Module | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<string>("")
   const [isAnswered, setIsAnswered] = useState(false)
-  const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchProgress = async () => {
-      try {
-        const response = await fetch('/api/user-progress')
-        if (!response.ok) throw new Error('Failed to fetch progress')
-        const data = await response.json()
-        setUserProgress(data)
-      } catch (error) {
-        console.error('Error fetching progress:', error)
-        // Initialize with default values if fetch fails
-        setUserProgress({
-          completedLessons: [],
-          completedModules: [],
-          lastModule: 0,
-          lastLesson: '',
-          totalProgress: 0
-        })
-      }
-      setIsLoading(false)
-    }
-    fetchProgress()
-  }, [session])
-
-  const updateProgress = async (lessonId: string, moduleId: number) => {
-    if (!session?.user) return
-
-    try {
-      const response = await fetch('/api/user-progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lessonId, moduleId }),
-      })
-      const data = await response.json()
-      setUserProgress(data)
-    } catch (error) {
-      console.error('Error updating progress:', error)
-    }
-  }
 
   const handleModuleSelect = (module: Module) => {
     setSelectedModule(module)
@@ -464,41 +412,8 @@ export function LearningModules() {
   const handleAnswerSubmit = async () => {
     if (selectedLesson && selectedAnswer && selectedModule) {
       setIsAnswered(true)
-      if (selectedAnswer === selectedLesson.correctAnswer) {
-        await updateProgress(selectedLesson.id, selectedModule.id)
-      }
+      // No progress update
     }
-  }
-
-  const handleResume = () => {
-    if (!userProgress) return
-    const lastModule = modules.find(m => m.id === userProgress.lastModule)
-    if (!lastModule) return
-    const lastLesson = lastModule.lessons.find(l => l.id === userProgress.lastLesson)
-    if (!lastLesson) return
-    setSelectedModule(lastModule)
-    setSelectedLesson(lastLesson)
-  }
-
-  const isLessonCompleted = (lessonId: string) => {
-    return userProgress?.completedLessons.includes(lessonId) || false
-  }
-
-  const isModuleCompleted = (moduleId: number) => {
-    if (!userProgress) return false
-    const module = modules.find(m => m.id === moduleId)
-    if (!module) return false
-    return module.lessons.every(lesson => userProgress.completedLessons.includes(lesson.id))
-  }
-
-  const getModuleProgress = (moduleId: number) => {
-    if (!userProgress?.completedLessons) return 0
-    const module = modules.find(m => m.id === moduleId)
-    if (!module) return 0
-    const completedLessons = module.lessons.filter(lesson => 
-      userProgress.completedLessons.includes(lesson.id)
-    ).length
-    return (completedLessons / module.lessons.length) * 100
   }
 
   const handleNextLesson = () => {
@@ -535,61 +450,27 @@ export function LearningModules() {
 
   return (
     <div className="space-y-8">
-      {userProgress && userProgress.lastModule > 0 && (
-        <Button
-          onClick={handleResume}
-          className="w-full bg-white/10 hover:bg-white/20 text-white mb-8"
-        >
-          <Play className="h-4 w-4 mr-2" />
-          Resume Learning
-        </Button>
-      )}
-
-      {/* Progress summary area */}
-      <div className="flex flex-col items-center mb-6">
-        {/* The progress circle has been removed as per user request */}
-      </div>
-
       {!selectedModule ? (
         <div className="grid gap-6 md:grid-cols-2">
           {modules.map((module) => (
             <Card
               key={module.id}
-              className={`p-6 transition-all cursor-pointer group ${
-                isModuleCompleted(module.id)
-                  ? "bg-green-500/10 border-green-500/20 hover:bg-green-500/20"
-                  : "bg-white/5 border-white/10 hover:bg-white/10"
-              }`}
+              className={`p-6 transition-all cursor-pointer group bg-white/5 border-white/10 hover:bg-white/10`}
               onClick={() => handleModuleSelect(module)}
             >
               <div className="flex items-start gap-4">
-                <div className={`p-3 rounded-lg ${
-                  isModuleCompleted(module.id)
-                    ? "bg-green-500/20"
-                    : "bg-white/10"
-                }`}>
-                  <module.icon className={`h-6 w-6 ${
-                    isModuleCompleted(module.id)
-                      ? "text-green-400"
-                      : "text-white"
-                  }`} />
+                <div className="p-3 rounded-lg bg-white/10">
+                  <module.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg font-semibold text-white">
                     Module {module.id}: {module.title}
                   </h3>
-                    {isModuleCompleted(module.id) && (
-                      <span className="text-green-400 text-sm">Completed</span>
-                    )}
                   </div>
                   <p className="text-white/80 mb-3">{module.description}</p>
                 </div>
-                <ChevronRight className={`h-6 w-6 transition-colors ${
-                  isModuleCompleted(module.id)
-                    ? "text-green-400/60 group-hover:text-green-400"
-                    : "text-white/40 group-hover:text-white/60"
-                }`} />
+                <ChevronRight className="h-6 w-6 transition-colors text-white/40 group-hover:text-white/60" />
               </div>
             </Card>
           ))}
@@ -610,10 +491,6 @@ export function LearningModules() {
               <h2 className="text-2xl font-bold text-white">
                 Module {selectedModule.id}: {selectedModule.title}
               </h2>
-                <Progress
-                  value={getModuleProgress(selectedModule.id)}
-                  className="mt-2 h-2 w-64"
-                />
               </div>
               {!selectedLesson && (
                 <Button
@@ -632,11 +509,7 @@ export function LearningModules() {
                 {selectedModule.lessons.map((lesson) => (
                   <Card
                     key={lesson.id}
-                    className={`p-4 transition-all cursor-pointer group ${
-                      isLessonCompleted(lesson.id)
-                        ? "bg-green-500/10 border-green-500/20 hover:bg-green-500/20"
-                        : "bg-white/5 border-white/10 hover:bg-white/10"
-                    }`}
+                    className={`p-4 transition-all cursor-pointer group bg-white/5 border-white/10 hover:bg-white/10`}
                     onClick={() => handleLessonSelect(lesson)}
                   >
                     <div className="flex items-center justify-between">
@@ -644,15 +517,8 @@ export function LearningModules() {
                       <h4 className="text-lg font-medium text-white">
                         Lesson {lesson.id} – {lesson.title}
                       </h4>
-                        {isLessonCompleted(lesson.id) && (
-                          <span className="text-green-400 text-sm">Completed</span>
-                        )}
                       </div>
-                      <ChevronRight className={`h-5 w-5 transition-colors ${
-                        isLessonCompleted(lesson.id)
-                          ? "text-green-400/60 group-hover:text-green-400"
-                          : "text-white/40 group-hover:text-white/60"
-                      }`} />
+                      <ChevronRight className="h-5 w-5 transition-colors text-white/40 group-hover:text-white/60" />
                     </div>
                   </Card>
                 ))}
