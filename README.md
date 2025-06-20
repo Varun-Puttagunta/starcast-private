@@ -85,11 +85,13 @@ yarn install
 
 ### 6. Set Up Environment Variables
 
-Copy the `.env.example` file and fill in your keys and secrets.
+If you do not see a `.env` file in your project, you need to create one. The recommended way is to copy the provided `.env.example` file:
 
 ```sh
 cp .env.example .env
 ```
+
+If there is no `.env.example` file, you can create a new `.env` file manually in the project root and add the required environment variables as shown below.
 
 Example `.env` file:
 
