@@ -47,13 +47,7 @@ pnpm install
 
 ### 6. Set up `.env` file
 
-If you do not see a `.env` file in your project, you need to create one. The recommended way is to copy the provided `.env.example` file:
-
-```bash
-cp .env.example .env
-```
-
-If there is no `.env.example` file, you can create a new `.env` file manually in the project root and add the required environment variables as shown below.
+you will have to create a `.env` file manually in the project root and add the required environment variables as shown below.
 
 Then, open `.env` and fill in your actual credentials:
 
@@ -91,10 +85,8 @@ NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
 
 ## 🌍 Public APIs Used (No Key Needed)
 
-- NASA EONET API – [https://eonet.gsfc.nasa.gov/api/v3/events](https://eonet.gsfc.nasa.gov/api/v3/events)
-- ISS APIs – [http://api.open-notify.org/](http://api.open-notify.org/)
-- Open-Meteo Weather – [https://api.open-meteo.com/v1](https://api.open-meteo.com/v1)
-- Spaceflight News – [https://api.spaceflightnewsapi.net/v4/articles/](https://api.spaceflightnewsapi.net/v4/articles/)
+- Use this to copy paste keys – [https://docs.google.com/document/d/19UkUfK3J0V_GbnQpnZdpSNCMAIAAvhT-9VJ2mW-ml2E/edit?tab=t.0)
+These are free temporary keys I have compiled
 
 ---
 
