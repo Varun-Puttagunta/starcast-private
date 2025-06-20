@@ -1,81 +1,160 @@
 # Starcast App
 
-This is your personal project. Use this guide to set up and run the app on a new computer.
-
-## Prerequisites
-- Node.js (v18 or higher recommended)
-- pnpm (or npm/yarn)
-- Git
-
-## Setup Instructions
-
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/Varun-Puttagunta/starcast-private.git
-   cd starcast-private
-   ```
-
-2. **Install dependencies:**
-   ```sh
-   pnpm install
-   # or
-   npm install
-   # or
-   yarn install
-   ```
-
-3. **Set up environment variables:**
-   - Copy `.env.example` to `.env` and fill in the required values.
-   - If `.env.example` does not exist, create a `.env` file with the necessary environment variables for your app (API keys, database URLs, etc).
-
-   Example `.env` variables:
-   ```env
-   # Database
-   DATABASE_URL="file:./dev.db"  # SQLite example, replace with your actual DB URL if different
-
-   # Google Auth (NextAuth)
-   GOOGLE_CLIENT_ID="your-google-client-id"
-   GOOGLE_CLIENT_SECRET="your-google-client-secret"
-
-   # Google Gemini AI API Key
-   GOOGLE_AI_API_KEY="your-google-ai-api-key"
-
-   # GeoDB Cities API (for location autocomplete)
-   NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
-
-   # (Optional) Add any other API keys or secrets below as needed
-   # ANOTHER_API_KEY="your-api-key-here"
-   ```
-
-4. **Set up the database:**
-   ```sh
-   pnpm prisma migrate deploy
-   # or
-   npx prisma migrate deploy
-   ```
-   - To seed the database (if you have a seed script):
-   ```sh
-   pnpm prisma db seed
-   # or
-   npx prisma db seed
-   ```
-
-5. **Run the development server:**
-   ```sh
-   pnpm dev
-   # or
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-6. **Open the app:**
-   - Visit `http://localhost:3000` in your browser.
-
-## Notes
-- Make sure you have the correct environment variables set up for authentication, database, and any APIs you use.
-- If you encounter issues, check your Node.js version and dependency installation.
+Welcome to the Starcast App! This guide will walk you through setting up the project from scratch, even if you've never installed Node.js or pnpm before.
 
 ---
 
-Happy coding! 
+## Prerequisites: Install Required Tools
+
+### 1. Install Node.js (v18 or higher recommended)
+
+Visit the [Node.js downloads page](https://nodejs.org/) and install the **LTS** version for your system.
+
+Alternatively, using a terminal:
+
+- **macOS (Homebrew):**
+  ```sh
+  brew install node
+  ```
+
+- **Ubuntu/Debian:**
+  ```sh
+  sudo apt update
+  sudo apt install nodejs npm
+  ```
+
+- **Windows:**
+  Download the installer from [nodejs.org](https://nodejs.org/) and run it.
+
+---
+
+### 2. Install pnpm
+
+pnpm is a faster, more efficient alternative to npm.
+
+```sh
+npm install -g pnpm
+```
+
+> If you're using yarn instead, you can skip this and use yarn throughout instead of pnpm.
+
+---
+
+### 3. Install Git
+
+Git is required to clone the project repository.
+
+- **macOS (Homebrew):**
+  ```sh
+  brew install git
+  ```
+
+- **Ubuntu/Debian:**
+  ```sh
+  sudo apt update
+  sudo apt install git
+  ```
+
+- **Windows:**
+  Download from [git-scm.com](https://git-scm.com/) and follow the installer.
+
+---
+
+## Project Setup
+
+### 4. Clone the Repository
+
+```sh
+git clone https://github.com/Varun-Puttagunta/starcast-private.git
+cd starcast-private
+```
+
+---
+
+### 5. Install Project Dependencies
+
+```sh
+pnpm install
+# or
+npm install
+# or
+yarn install
+```
+
+---
+
+### 6. Set Up Environment Variables
+
+Copy the `.env.example` file and fill in your keys and secrets.
+
+```sh
+cp .env.example .env
+```
+
+Example `.env` file:
+
+```env
+# Database
+DATABASE_URL="file:./prisma/dev.db"
+
+# Google Auth (NextAuth)
+GOOGLE_CLIENT_ID="your-google-client-id"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Google Gemini AI API Key
+GOOGLE_AI_API_KEY="your-google-ai-api-key"
+
+# GeoDB Cities API (for location autocomplete)
+NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
+```
+
+---
+
+### 7. Set Up the Database
+
+Run the following commands to generate the Prisma client and apply migrations:
+
+```sh
+pnpm exec prisma generate
+pnpm exec prisma migrate deploy
+```
+
+---
+
+### 8. Seed the Database
+
+Run the seed script using a compatible `ts-node` setup:
+
+```sh
+pnpm exec ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+```
+
+You should see:
+
+```plaintext
+Database has been seeded!
+```
+
+---
+
+### 9. Start the Development Server
+
+```sh
+pnpm dev
+# or
+npm run dev
+# or
+yarn dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## ✅ You're All Set!
+
+Your development environment is now fully configured. No extra steps or manual fixes required.
+
+---
+
+Happy building! 🚀
