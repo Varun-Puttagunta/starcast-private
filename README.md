@@ -43,52 +43,80 @@ pnpm install
 
 ---
 
-## ⚙️ Environment Variables
+## 6. ⚙️ Environment Variables
 
-### 6. Set up `.env` file
+## 🔐 `.env` File Setup
 
-you will have to create a `.env` file manually in the project root and add the required environment variables as shown below.
-
-Then, open `.env` and fill in your actual credentials:
+Create a `.env` file in the root of your project and paste the following:
 
 ```env
-# Database
+# Database (using SQLite for local development)
 DATABASE_URL="file:./prisma/dev.db"
 
-# Google Auth (NextAuth)
+# Google Authentication (NextAuth)
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Google Gemini AI API Key
+# Google Gemini AI API (for event descriptions)
 GOOGLE_AI_API_KEY="your-google-ai-api-key"
 
-# GeoDB Cities API
+# GeoDB Cities API (for location autocomplete)
 NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
 ```
 
----
+✅ You can use **free temporary keys** from this shared doc:  
+📄 [API Key Reference – Google Doc](https://docs.google.com/document/d/19UkUfK3J0V_GbnQpnZdpSNCMAIAAvhT-9VJ2mW-ml2E/edit?usp=sharing)
 
-## 🔑 External API Setup
-
-### 1. **Google Gemini AI API**
-- Used for AI-powered event descriptions
-- Set in: `GOOGLE_AI_API_KEY`
-
-### 2. **Google Auth (NextAuth)**
-- Set in: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
-
-### 3. **GeoDB Cities API**
-- Used for location autocomplete
-- Set in: `NEXT_PUBLIC_GEODB_API_KEY`
+⚠️ Make sure your `.env` file is **not committed** to Git (add it to `.gitignore`).
 
 ---
 
-## 🌍 Public APIs Used (No Key Needed)
+## 🌐 Public APIs Used
 
-- Use this to copy paste keys – [https://docs.google.com/document/d/19UkUfK3J0V_GbnQpnZdpSNCMAIAAvhT-9VJ2mW-ml2E/edit?tab=t.0)
-These are free temporary keys I have compiled
+| API                    | Purpose                            | Environment Variable(s)                        |
+|------------------------|------------------------------------|------------------------------------------------|
+| **Google Gemini AI**   | AI-generated content (descriptions) | `GOOGLE_AI_API_KEY`                            |
+| **Google Auth**        | User login with OAuth              | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`     |
+| **GeoDB Cities API**   | Location autocomplete              | `NEXT_PUBLIC_GEODB_API_KEY`                    |
 
 ---
+
+## 🔑 (Optional) Generate Your Own API Keys
+
+If you prefer not to use the temporary keys, here’s how you can create your own:
+
+### 1. **Google Gemini AI API Key**
+- Go to: [https://makersuite.google.com/app/apikey](https://makersuite.google.com/app/apikey)
+- Sign in with a Google account
+- Click “Create API Key”
+- Copy it into your `.env` as:
+  ```env
+  GOOGLE_AI_API_KEY="your-api-key"
+  ```
+
+### 2. **Google OAuth Credentials (NextAuth)**
+- Go to: [https://console.cloud.google.com/](https://console.cloud.google.com/)
+- Create a new project or select an existing one
+- Navigate to **APIs & Services → Credentials**
+- Click **"Create Credentials" → OAuth Client ID**
+- Choose **"Web Application"**
+- Add `http://localhost:3000` to Authorized Redirect URIs (for local dev)
+- Copy the `Client ID` and `Client Secret`:
+  ```env
+  GOOGLE_CLIENT_ID="your-client-id"
+  GOOGLE_CLIENT_SECRET="your-client-secret"
+  ```
+
+### 3. **GeoDB Cities API Key**
+- Go to: [https://rapidapi.com/wirefreethought/api/geodb-cities](https://rapidapi.com/wirefreethought/api/geodb-cities)
+- Click “Subscribe” (free tier is fine)
+- Copy your API key from the “X-RapidAPI-Key” header
+- Paste it into `.env` as:
+  ```env
+  NEXT_PUBLIC_GEODB_API_KEY="your-api-key"
+  ```
+
+
 
 ## 🧱 Set Up the Database
 
@@ -127,3 +155,5 @@ Then open: [http://localhost:3000](http://localhost:3000)
 ## ✅ Done!
 
 Your Starcast development environment is ready. Happy coding! 🚀
+
+Note: You might see error at bottem left saying "window not defined" ignore this as I was in the process of adding other features but ran out of time.
