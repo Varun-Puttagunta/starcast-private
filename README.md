@@ -28,27 +28,24 @@ This is your personal project. Use this guide to set up and run the app on a new
    - Copy `.env.example` to `.env` and fill in the required values.
    - If `.env.example` does not exist, create a `.env` file with the necessary environment variables for your app (API keys, database URLs, etc).
 
-### Example .env file
+   Example `.env` variables:
+   ```env
+   # Database
+   DATABASE_URL="file:./dev.db"  # SQLite example, replace with your actual DB URL if different
 
-```env
-# Example environment variables for Starcast App
+   # Google Auth (NextAuth)
+   GOOGLE_CLIENT_ID="your-google-client-id"
+   GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# Database
-DATABASE_URL="file:./dev.db"  # SQLite example, replace with your actual DB URL if different
+   # Google Gemini AI API Key
+   GOOGLE_AI_API_KEY="your-google-ai-api-key"
 
-# Google Auth (NextAuth)
-GOOGLE_CLIENT_ID="your-google-client-id"
-GOOGLE_CLIENT_SECRET="your-google-client-secret"
+   # GeoDB Cities API (for location autocomplete)
+   NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
 
-# Google Gemini AI API Key
-GOOGLE_AI_API_KEY="your-google-ai-api-key"
-
-# GeoDB Cities API (for location autocomplete)
-NEXT_PUBLIC_GEODB_API_KEY="your-geodb-api-key"
-
-# (Optional) Add any other API keys or secrets below as needed
-# ANOTHER_API_KEY="your-api-key-here"
-```
+   # (Optional) Add any other API keys or secrets below as needed
+   # ANOTHER_API_KEY="your-api-key-here"
+   ```
 
 4. **Set up the database:**
    ```sh
